@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Christmas</title>
+    <style>
+      body {
+        background: radial-gradient(#236, #223);
+        height: 100vh;
+        width: 1000vw;
+      }
+      .tr {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+      }
+      .bl {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+      }
+      h1 {
+        position: absolute;
+        color: white;
+        text-align: center;
+        width: 100vw;
+        top: 50vh;
+      }
+    </style>
+  </head>
+  <body>
+    <img src="./img/tr.png" class="tr" />
+    <img src="./img/bl.png" class="bl" />
+    <h1 id="name">Meery Christmas</h1>
+    <script>
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const nameInput = urlParams.get("name") || "friend";
+      const nameElem = document.getElementById("name");
+      nameElem.innerText = nameInput;
+    </script>
+  </body>
+</html>
