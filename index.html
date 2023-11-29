@@ -5,40 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Happy Christmas</title>
     <style>
-      body {
-        background: radial-gradient(#236, #223);
-        height: 100vh;
-        width: 1000vw;
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
+      body,
+      html {
+        margin: 0;
+        background: #223;
+        color: white;
       }
-      .tr {
-        position: absolute;
-        top: 0px;
-        right: 0px;
+      .flex-container {
+        margin: 0px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center; /* align item horizontally */
+        align-items: center; /* align item vertically */
       }
-      .bl {
-        position: absolute;
-        bottom: 0px;
-        left: 0px;
+      .item {
+        width: auto;
+        padding: 20px;
       }
       h1 {
-        position: absolute;
-        color: white;
+        font-family: 'Hedvig Letters Serif', serif;
+        font-size: 3em;
         text-align: center;
-        width: 100vw;
-        top: 50vh;
+        font-weight: bold;
+        text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.6)
+      }
+      h2#name {
+        font-family: 'Dancing Script', cursive;
+        margin-top: 0;
+        font-size: 2em;
+        text-align: center;
+      }
+      .sky {
+        height: 100%;
+        color: #222;
+        display: block;
+        position: absolute;
+        width: 100%;
+      }
+      .bl {
+        height: 300px;
+        position: fixed;
+        background-image: url("./img/flowers.png");
+        background-size: contain;
+        background-repeat: repeat-x;
+        background-position: bottom;
+        width: 100%;
+        bottom: 0;
       }
     </style>
   </head>
   <body>
-    <img src="./img/tr.png" class="tr" />
-    <img src="./img/bl.png" class="bl" />
-    <h1 id="name">Meery Christmas</h1>
+    <section class="sky"></section>
+    <div class="flex-container">
+      <div class="item">
+        <h1>Merry Christmas</h1>
+        <h2 id="name">Merry Christmas</h2>
+      </div>
+    </div>
+    <div class="bl"></div>
+
     <script>
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
-      const nameInput = urlParams.get("name") || "friend";
+      const nameInput = urlParams.get("name") || "My dear friend";
       const nameElem = document.getElementById("name");
-      nameElem.innerText = nameInput;
+      nameElem.innerText = `${nameInput}`;
+
+      doSnowFlake();
+      function doSnowFlake() {
+        let COUNT = 100;
+        let masthead = document.querySelector(".sky");
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext("2d");
+        let width = masthead.clientWidth;
+        let height = masthead.clientHeight;
+        let i = 0;
+        let active = false;
+
+        function onResize() {
+          width = masthead.clientWidth;
+          height = masthead.clientHeight;
+          canvas.width = width;
+          canvas.height = height;
+          ctx.fillStyle = "#FFF";
+
+          let wasActive = active;
+          active = width > 100;
+
+          if (!wasActive && active) requestAnimFrame(update);
+        }
+
+        let Snowflake = function () {
+          this.x = 0;
+          this.y = 0;
+          this.vy = 0;
+          this.vx = 0;
+          this.r = 0;
+
+          this.reset();
+        };
+
+        Snowflake.prototype.reset = function () {
+          this.x = Math.random() * width;
+          this.y = Math.random() * -height;
+          this.vy = 1 + Math.random() * 3;
+          this.vx = 0.5 - Math.random();
+          this.r = 1 + Math.random() * 2;
+          this.o = 0.5 + Math.random() * 0.5;
+        };
+
+        canvas.style.position = "absolute";
+        canvas.style.left = canvas.style.top = "0";
+
+        let snowflakes = [],
+          snowflake;
+        for (i = 0; i < COUNT; i++) {
+          snowflake = new Snowflake();
+          snowflake.reset();
+          snowflakes.push(snowflake);
+        }
+
+        function update() {
+          ctx.clearRect(0, 0, width, height);
+
+          if (!active) return;
+
+          for (i = 0; i < COUNT; i++) {
+            snowflake = snowflakes[i];
+            snowflake.y += snowflake.vy;
+            snowflake.x += snowflake.vx;
+
+            ctx.globalAlpha = snowflake.o;
+            ctx.beginPath();
+            ctx.arc(snowflake.x, snowflake.y, snowflake.r, 0, Math.PI * 2, false);
+            ctx.closePath();
+            ctx.fill();
+
+            if (snowflake.y > height) {
+              snowflake.reset();
+            }
+          }
+
+          requestAnimFrame(update);
+        }
+
+        window.requestAnimFrame = (function () {
+          return (
+            window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            function (callback) {
+              window.setTimeout(callback, 1000 / 60);
+            }
+          );
+        })();
+
+        onResize();
+        window.addEventListener("resize", onResize, false);
+
+        masthead.appendChild(canvas);
+      }
     </script>
   </body>
 </html>
