@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Happy Christmas</title>
     <style>
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
+      @import url("https://fonts.googleapis.com/css2?family=Dancing+Script&family=Hedvig+Letters+Serif:opsz@12..24&display=swap");
       body,
       html {
         margin: 0;
@@ -24,14 +24,14 @@
         padding: 20px;
       }
       h1 {
-        font-family: 'Hedvig Letters Serif', serif;
+        font-family: "Hedvig Letters Serif", serif;
         font-size: 3em;
         text-align: center;
         font-weight: bold;
-        text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.6)
+        text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.6);
       }
       h2#name {
-        font-family: 'Dancing Script', cursive;
+        font-family: "Dancing Script", cursive;
         margin-top: 0;
         font-size: 2em;
         text-align: center;
@@ -53,6 +53,35 @@
         width: 100%;
         bottom: 0;
       }
+      #share-button {
+        display: none;
+        margin: 0 auto;
+        padding: 0.5em;
+        color: white;
+        position: relative;
+        z-index: 2;
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+      }
+      #share-button:hover {
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+      }
+      #share-card {
+        border-radius: 1em;
+        display: none;
+        background-color: rgba(0, 0, 0, 0.2);
+        width: 200px;
+        margin: 0 auto;
+        z-index: 2;
+        text-align: center;
+        padding: 1em;
+        position: relative;
+      }
     </style>
   </head>
   <body>
@@ -61,6 +90,11 @@
       <div class="item">
         <h1>Merry Christmas</h1>
         <h2 id="name">Merry Christmas</h2>
+        <button id="share-button">Wish your loved ones</button>
+        <section id="share-card">
+          <span class="close"></span>
+          <h2>Sharing feature coming soon!</h2>
+        </section>
       </div>
     </div>
     <div class="bl"></div>
@@ -166,6 +200,18 @@
 
         masthead.appendChild(canvas);
       }
+
+      const shareButton = document.getElementById("share-button");
+      const shareCard = document.getElementById("share-card");
+
+      shareButton.addEventListener("click", () => {
+        shareButton.style.display = "none";
+        shareCard.style.display = "block";
+      });
+
+      setTimeout(() => {
+        shareButton.style.display = "block";
+      }, 5000);
     </script>
   </body>
 </html>
